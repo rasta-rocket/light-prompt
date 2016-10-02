@@ -33,17 +33,32 @@ get_dir(){
 }
 
 get_hostname(){
-  echo "\h@ \u"
+  echo "\h"
 }
 
 get_git(){
-  echo ""
+  if [ ! -x "$(which git)" ]
+  then
+    echo ""
+    return
+  fi
+
+  local git_eng="env LANG=C git"   # force git output in English to make our work easier
+  # get current branch name or short SHA1 hash for detached head
+  local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+
+  if [[ ! $branch ]]
+  then
+    echo ""
+    return  # git branch not found
+  fi
+  echo "$GIT_MAIN  $branch"
 }
 
 ps1(){
   PS1=""
 
-  local command_list=( "get_hostname" "get_dir" )
+  local command_list=( "get_hostname" "get_dir" "get_git")
   local info_list=()
   local list_size=$((${#command_list[*]}-1))
 
@@ -72,5 +87,5 @@ ps1(){
   done
 }
 
-#PROMPT_COMMAND=ps1
-ps1
+PROMPT_COMMAND=ps1
+#ps1
