@@ -55,10 +55,19 @@ get_git(){
   echo "$GIT_MAIN  $branch"
 }
 
+get_virtualenv(){
+  if [[ $VIRTUAL_ENV != "" ]]
+  then
+    echo "❲$(basename $VIRTUAL_ENV)❳"
+    return
+  fi
+  echo ""
+}
+
 ps1(){
   PS1=""
 
-  local command_list=( "get_hostname" "get_dir" "get_git")
+  local command_list=( "get_hostname" "get_virtualenv" "get_dir" "get_git" )
   local info_list=()
   local list_size=$((${#command_list[*]}-1))
 
