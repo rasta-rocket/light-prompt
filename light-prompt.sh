@@ -51,6 +51,9 @@ get_git(){
   then
     echo ""
     return  # git branch not found
+  elif [[ $branch == "HEAD" ]]
+  then
+    branch="$(git rev-parse --short HEAD 2>/dev/null)"
   fi
   echo "$GIT_MAIN  $branch"
 }
