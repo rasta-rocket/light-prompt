@@ -42,20 +42,19 @@ get_git(){
     echo ""
     return
   fi
-
-  local git_eng="env LANG=C git"   # force git output in English to make our work easier
   # get current branch name or short SHA1 hash for detached head
-  local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+  local git_eng="env LANG=C git"   # force git output in English to make our work easier
+  local branch="$(git describe --tags --exact-match 2> /dev/null || git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
-  if [[ ! $branch ]]
-  then
+  if [[ ! -z "$branch" ]]; then
+    if [[ $branch == "HEAD" ]]; then
+      branch="$(git rev-parse --short HEAD 2>/dev/null)"
+    fi
+    echo "$GIT_MAIN  $branch"
+  else
     echo ""
     return  # git branch not found
-  elif [[ $branch == "HEAD" ]]
-  then
-    branch="$(git rev-parse --short HEAD 2>/dev/null)"
   fi
-  echo "$GIT_MAIN  $branch"
 }
 
 get_virtualenv(){
