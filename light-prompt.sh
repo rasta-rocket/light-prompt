@@ -44,17 +44,29 @@ get_git(){
   fi
   # get current branch name or short SHA1 hash for detached head
   local git_eng="env LANG=C git"   # force git output in English to make our work easier
-  local branch="$(git describe --tags --exact-match 2> /dev/null || git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
-  if [[ ! -z "$branch" ]]; then
-    if [[ $branch == "HEAD" ]]; then
-      branch="$(git rev-parse --short HEAD 2>/dev/null)"
+  local commit="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+  if [[ ! -z "$commit" ]]; then
+    if [[ $commit == "HEAD" ]]; then
+      commit="$(git describe --tags --exact-match 2> /dev/null || git rev-parse --short HEAD 2>/dev/null)"
     fi
-    echo "$GIT_MAIN  $branch"
+    echo "$GIT_MAIN  $commit"
+    return
   else
     echo ""
-    return  # git branch not found
+    return #not a git repository
   fi
+  #local branch="$(git describe --tags --exact-match 2> /dev/null || git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+
+  #if [[ ! -z "$branch" ]]; then
+  #  if [[ $branch == "HEAD" ]]; then
+  #    branch="$(git rev-parse --short HEAD 2>/dev/null)"
+  #  fi
+  #  echo "$GIT_MAIN  $branch"
+  #else
+  #  echo ""
+  #  return  # git branch not found
+  #fi
 }
 
 get_virtualenv(){
