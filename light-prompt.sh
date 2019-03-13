@@ -33,7 +33,7 @@ get_dir(){
 }
 
 get_hostname(){
-  echo "\h"
+  echo ""
 }
 
 get_git(){
