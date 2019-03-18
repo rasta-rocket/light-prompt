@@ -50,6 +50,17 @@ get_kube(){
   echo "$SYMBOL_KUBE  $current_context"
 }
 
+get_aws(){
+  if [[ ! -x "$(which aws)" || -z "$AWS_PROFILE" ]]
+  then
+    echo ""
+    return
+  fi
+  local profile="$AWS_PROFILE"
+  echo "$SYMBOL_AWS  ${profile}"
+
+}
+
 get_git(){
   if [ ! -x "$(which git)" ]
   then
@@ -95,7 +106,7 @@ get_virtualenv(){
 ps1(){
   PS1=""
 
-  local command_list=( "get_hostname" "get_virtualenv" "get_kube" "get_dir" "get_git" )
+  local command_list=( "get_hostname" "get_virtualenv" "get_aws" "get_kube" "get_dir" "get_git" )
   local info_list=()
   local list_size=$((${#command_list[*]}-1))
 
