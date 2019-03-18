@@ -25,11 +25,15 @@ RESET="\[$(tput sgr0)\]"
 # SYMBOLS
 SEP=""
 GIT_MAIN="⎇"
-KUBE="⎈"
+SYMBOL_DIR=""
+SYMBOL_KUBE="⎈"
+SYMBOL_PYTHON=""
+SYMBOL_GIT=""
+SYMBOL_AWS=""
 
 # Functions
 get_dir(){
-  echo "\W"
+  echo "$SYMBOL_DIR  \W"
 }
 
 get_hostname(){
@@ -43,7 +47,7 @@ get_kube(){
     return
   fi
   local current_context="$(kubectl config get-contexts | grep "\*" | awk '{print $3 "/" $5}')"
-  echo "$KUBE $current_context"
+  echo "$SYMBOL_KUBE  $current_context"
 }
 
 get_git(){
@@ -60,7 +64,7 @@ get_git(){
     if [[ $commit == "HEAD" ]]; then
       commit="$(git describe --tags --exact-match 2> /dev/null || git rev-parse --short HEAD 2>/dev/null)"
     fi
-    echo "$GIT_MAIN  $commit"
+    echo "$SYMBOL_GIT  $commit"
     return
   else
     echo ""
@@ -72,7 +76,7 @@ get_git(){
   #  if [[ $branch == "HEAD" ]]; then
   #    branch="$(git rev-parse --short HEAD 2>/dev/null)"
   #  fi
-  #  echo "$GIT_MAIN  $branch"
+  #  echo "$SYMBOL_GIT  $branch"
   #else
   #  echo ""
   #  return  # git branch not found
@@ -82,7 +86,7 @@ get_git(){
 get_virtualenv(){
   if [[ $VIRTUAL_ENV != "" ]]
   then
-    echo "❲$(basename $VIRTUAL_ENV)❳"
+    echo "$SYMBOL_PYTHON  $(basename $VIRTUAL_ENV)"
     return
   fi
   echo ""
