@@ -25,15 +25,25 @@ RESET="\[$(tput sgr0)\]"
 # SYMBOLS
 SEP=""
 GIT_MAIN="⎇"
+KUBE="⎈"
 
 # Functions
-
 get_dir(){
   echo "\W"
 }
 
 get_hostname(){
-  echo ""
+  echo ""
+}
+
+get_kube(){
+  if [ ! -x "$(which kubectl)" ]
+  then
+    echo ""
+    return
+  fi
+  local current_context="$(kubectl config get-contexts | grep "\*" | awk '{print $3 "/" $5}')"
+  echo "$KUBE $current_context"
 }
 
 get_git(){
@@ -81,7 +91,7 @@ get_virtualenv(){
 ps1(){
   PS1=""
 
-  local command_list=( "get_hostname" "get_virtualenv" "get_dir" "get_git" )
+  local command_list=( "get_hostname" "get_virtualenv" "get_kube" "get_dir" "get_git" )
   local info_list=()
   local list_size=$((${#command_list[*]}-1))
 
