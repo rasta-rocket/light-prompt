@@ -1,8 +1,8 @@
 #!/bin/bash
-
+# for docker login cat .docker/config.json | jq .auths | length
 # COLORS
-PURPLE_BG=("\\[\033[48;5;54m\]" "\\[\033[48;5;90m\]" "\\[\033[48;5;126m\]" "\\[\033[48;5;162m\]" "\\[\033[48;5;198m\]")
-PURPLE_FG=("\\[\033[38;5;54m\]" "\\[\033[38;5;90m\]" "\\[\033[38;5;126m\]" "\\[\033[38;5;162m\]" "\\[\033[38;5;198m\]")
+PURPLE_BG=("\033[48;5;54m" "\033[48;5;90m" "\033[48;5;126m" "\033[48;5;162m" "\033[48;5;198m")
+PURPLE_FG=("\033[38;5;54m" "\033[38;5;90m" "\033[38;5;126m" "\033[38;5;162m" "\033[38;5;198m")
 
 COLOR_BG_DARK="\[$(tput setab 0)\]"
 COLOR_BG_GREY="\[\033[0;47m\]"
@@ -20,7 +20,7 @@ COLOR_FG_GREEN="\[$(tput setaf 2)\]"
 #COLORS_FG=( $COLOR_FG_DARK $COLOR_FG_RED $COLOR_FG_BLUE $COLOR_FG_GREEN $COLOR_FG_GREY )
 COLORS_FG=(${PURPLE_FG[*]})
 
-RESET="\[$(tput sgr0)\]"
+RESET="$(tput sgr0)"
 
 # SYMBOLS
 SEP=""
@@ -104,7 +104,7 @@ get_virtualenv(){
 }
 
 ps1(){
-  PS1=""
+  PS1="\["
 
   local command_list=( "get_hostname" "get_virtualenv" "get_aws" "get_kube" "get_dir" "get_git" )
   local info_list=()
@@ -127,7 +127,7 @@ ps1(){
     if [[ $i == $list_size ]]
     then
       SEP_COLOR="$RESET${COLORS_FG[$i]}$SEP"
-      PS1+="${COLORS_BG[$i]} ${info_list[$i]} $SEP_COLOR$RESET "
+      PS1+="${COLORS_BG[$i]} ${info_list[$i]} $SEP_COLOR$RESET \]"
     else
       SEP_COLOR="${COLORS_BG[$(($i+1))]}${COLORS_FG[$i]}$SEP"
       PS1+="${COLORS_BG[$i]} ${info_list[$i]} $SEP_COLOR$RESET"
