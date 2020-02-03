@@ -104,7 +104,7 @@ get_virtualenv(){
 }
 
 ps1(){
-  PS1="\["
+  PS1="\[$RESET"
 
   local command_list=( "get_hostname" "get_virtualenv" "get_aws" "get_kube" "get_dir" "get_git" )
   local info_list=()
