@@ -30,6 +30,7 @@ SYMBOL_KUBE="⎈"
 SYMBOL_PYTHON=""
 SYMBOL_GIT=""
 SYMBOL_AWS=""
+SYMBOL_TF=""
 
 # Functions
 get_dir(){
@@ -59,6 +60,16 @@ get_aws(){
   local profile="$AWS_PROFILE"
   echo "$SYMBOL_AWS  ${profile}"
 
+}
+
+get_tf(){
+  if [[ ! -x "$(which tfswitch)" && ! -x "$(which tfswitch)" ]]
+  then
+    echo ""
+    return
+  fi
+  local tf_version="$(terraform -version | head -n1 | awk '{print $2}')"
+  echo "$SYMBOL_TF ${tf_version}"
 }
 
 get_git(){
@@ -106,7 +117,7 @@ get_virtualenv(){
 ps1(){
   PS1="\[$RESET"
 
-  local command_list=( "get_hostname" "get_virtualenv" "get_aws" "get_kube" "get_dir" "get_git" )
+  local command_list=( "get_hostname" "get_virtualenv" "get_aws" "get_tf" "get_kube" "get_dir" "get_git" )
   local info_list=()
   local list_size=$((${#command_list[*]}-1))
 
